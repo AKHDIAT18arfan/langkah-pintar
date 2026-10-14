@@ -1,60 +1,65 @@
-import './style.css'
-import heroImg from './assets/hero.png'
-import javascriptLogo from './assets/javascript.svg'
-import viteLogo from './assets/vite.svg'
-import { setupCounter } from './counter.js'
+import { HomePage } from './components/HomePage.js';
+import { LevelSelectPage } from './components/LevelSelectPage.js';
+import { GamePage } from './components/GamePage.js';
+import { storage } from './storage.js';
 
-document.querySelector('#app').innerHTML = `
-<section id="center">
-  <div class="hero">
-    <img src="${heroImg}" class="base" width="170" height="179">
-    <img src="${javascriptLogo}" class="framework" alt="JavaScript logo"/>
-    <img src="${viteLogo}" class="vite" alt="Vite logo" />
-  </div>
-  <div>
-    <h1>Get started</h1>
-    <p>Edit <code>src/main.js</code> and save to test <code>HMR</code></p>
-  </div>
-  <button id="counter" type="button" class="counter"></button>
-</section>
+class App {
+  constructor() {
+    this.currentPage = 'home';
+    this.currentLevelId = null;
+    this.gamePage = new GamePage(this.navigate.bind(this));
+  }
 
-<div class="ticks"></div>
+  navigate(page, param = null) {
+    this.currentPage = page;
+    
+    if (page === 'home') {
+      const homePage = new HomePage(this.navigate.bind(this));
+      homePage.render();
+    } else if (page === 'askName') {
+      this.showNameDialog();
+    } else if (page === 'levels') {
+      const levelSelectPage = new LevelSelectPage(this.navigate.bind(this));
+      levelSelectPage.render();
+    } else if (page === 'game' && param) {
+      this.currentLevelId = param;
+      this.gamePage.render(param);
+    }
+  }
 
-<section id="next-steps">
-  <div id="docs">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#documentation-icon"></use></svg>
-    <h2>Documentation</h2>
-    <p>Your questions, answered</p>
-    <ul>
-      <li>
-        <a href="https://vite.dev/" target="_blank">
-          <img class="logo" src="${viteLogo}" alt="" />
-          Explore Vite
-        </a>
-      </li>
-      <li>
-        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-          <img class="button-icon" src="${javascriptLogo}" alt="">
-          Learn more
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div id="social">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#social-icon"></use></svg>
-    <h2>Connect with us</h2>
-    <p>Join the Vite community</p>
-    <ul>
-      <li><a href="https://github.com/vitejs/vite" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#github-icon"></use></svg>GitHub</a></li>
-      <li><a href="https://chat.vite.dev/" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#discord-icon"></use></svg>Discord</a></li>
-      <li><a href="https://x.com/vite_js" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#x-icon"></use></svg>X.com</a></li>
-      <li><a href="https://bsky.app/profile/vite.dev" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#bluesky-icon"></use></svg>Bluesky</a></li>
-    </ul>
-  </div>
-</section>
+  showNameDialog() {
+    const nickname = storage.getNickname();
+    const input = prompt('Siapa nama mu?', nickname || '');
+    
+    if (input && input.trim()) {
+      storage.setNickname(input.trim());
+      this.navigate('levels');
+    } else if (input === '') {
+      // User click OK tapi kosong
+      alert('Nama tidak boleh kosong!');
+      this.showNameDialog();
+    } else {
+      // User click Cancel
+      this.navigate('home');
+    }
+  }
 
-<div class="ticks"></div>
-<section id="spacer"></section>
-`
+  checkAnswer() {
+    this.gamePage.checkAnswer();
+  }
 
-setupCounter(document.querySelector('#counter'))
+  showRobotView() {
+    this.gamePage.showRobotView();
+  }
+
+  nextLevel() {
+    this.gamePage.nextLevel();
+  }
+}
+
+// Initialize app
+const app = new App();
+window.APP = app;
+
+// Start at home
+app.navigate('home');
