@@ -1,65 +1,107 @@
 import { HomePage } from './components/HomePage.js';
 import { LevelSelectPage } from './components/LevelSelectPage.js';
 import { GamePage } from './components/GamePage.js';
+import { FeedbackPage } from './components/FeedbackPage.js';
+import { MateriPage } from './components/MateriPage.js';
 import { storage } from './storage.js';
 
 class App {
   constructor() {
     this.currentPage = 'home';
     this.currentLevelId = null;
-    this.gamePage = new GamePage(this.navigate.bind(this));
+    
+    // Initialize pages
+    this.homePage = new HomePage(this);
+    this.levelSelectPage = new LevelSelectPage(this);
+    this.gamePage = new GamePage(this);
+    this.feedbackPage = new FeedbackPage(this);
+    this.materiPage = new MateriPage(this);
+    
+    // Start app
+    this.navigate('home');
   }
 
   navigate(page, param = null) {
-    this.currentPage = page;
+    const app = document.getElementById('app');
     
-    if (page === 'home') {
-      const homePage = new HomePage(this.navigate.bind(this));
-      homePage.render();
-    } else if (page === 'askName') {
-      this.showNameDialog();
-    } else if (page === 'levels') {
-      const levelSelectPage = new LevelSelectPage(this.navigate.bind(this));
-      levelSelectPage.render();
-    } else if (page === 'game' && param) {
-      this.currentLevelId = param;
-      this.gamePage.render(param);
+    switch(page) {
+      case 'home':
+        app.innerHTML = this.homePage.render();
+        this.homePage.addStyles();
+        this.currentPage = 'home';
+        break;
+      
+      case 'askName':
+        this.showNamePrompt();
+        this.currentPage = 'askName';
+        break;
+      
+      case 'levels':
+        app.innerHTML = this.levelSelectPage.render();
+        this.levelSelectPage.addStyles();
+        this.currentPage = 'levels';
+        break;
+      
+      case 'game':
+        if(param) {
+          this.currentLevelId = param;
+          app.innerHTML = this.gamePage.render(param);
+          this.gamePage.addStyles();
+          this.currentPage = 'game';
+        }
+        break;
+      
+      case 'feedback':
+        if(param) {
+          app.innerHTML = this.feedbackPage.render(param);
+          this.feedbackPage.addStyles();
+          this.currentPage = 'feedback';
+        }
+        break;
+      
+      case 'materi':
+        app.innerHTML = this.materiPage.render();
+        this.materiPage.addStyles();
+        this.currentPage = 'materi';
+        break;
+      
+      default:
+        this.navigate('home');
     }
   }
 
-  showNameDialog() {
-    const nickname = storage.getNickname();
-    const input = prompt('Siapa nama mu?', nickname || '');
+  showNamePrompt() {
+    const name = prompt('Siapa nama kamu? 👤', 'Anak Pintar');
     
-    if (input && input.trim()) {
-      storage.setNickname(input.trim());
+    if(name && name.trim()) {
+      storage.setNickname(name.trim());
       this.navigate('levels');
-    } else if (input === '') {
-      // User click OK tapi kosong
-      alert('Nama tidak boleh kosong!');
-      this.showNameDialog();
     } else {
-      // User click Cancel
-      this.navigate('home');
+      storage.setNickname('Anak Pintar');
+      this.navigate('levels');
     }
   }
 
   checkAnswer() {
-    this.gamePage.checkAnswer();
+    if(this.gamePage) {
+      this.gamePage.checkAnswer();
+    }
   }
 
   showRobotView() {
-    this.gamePage.showRobotView();
+    if(this.gamePage) {
+      this.gamePage.showRobotView();
+    }
   }
 
   nextLevel() {
-    this.gamePage.nextLevel();
+    if(this.gamePage) {
+      this.gamePage.nextLevel();
+    }
   }
 }
 
-// Initialize app
-const app = new App();
-window.APP = app;
-
-// Start at home
-app.navigate('home');
+// Initialize app when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  window.APP = new App();
+});
