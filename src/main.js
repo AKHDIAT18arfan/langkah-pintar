@@ -3,7 +3,9 @@ import { LevelSelectPage } from './components/LevelSelectPage.js';
 import { GamePage } from './components/GamePage.js';
 import { FeedbackPage } from './components/FeedbackPage.js';
 import { MateriPage } from './components/MateriPage.js';
+import { NamePromptPage } from './components/NamePromptPage.js'; // <-- Impor komponen form nama
 import { storage } from './storage.js';
+import { RobotCompanion } from './components/RobotCompanion.js';
 
 class App {
   constructor() {
@@ -16,13 +18,35 @@ class App {
     this.gamePage = new GamePage(this);
     this.feedbackPage = new FeedbackPage(this);
     this.materiPage = new MateriPage(this);
+    this.namePromptPage = new NamePromptPage(this); // <-- Inisialisasi halaman form nama
     
-    // Start app
-    this.navigate('home');
+    // Cek apakah ada halaman tersimpan di sessionStorage saat refresh
+    const savedPage = sessionStorage.getItem('lp_current_page');
+    const savedParam = sessionStorage.getItem('lp_current_param');
+    
+    if (savedPage && savedPage !== 'home') {
+      let parsedParam = null;
+      try {
+        parsedParam = savedParam ? JSON.parse(savedParam) : null;
+      } catch (e) {
+        parsedParam = savedParam;
+      }
+      this.navigate(savedPage, parsedParam);
+    } else {
+      this.navigate('home');
+    }
   }
 
   navigate(page, param = null) {
     const app = document.getElementById('app');
+    
+    // Simpan state halaman saat ini ke sessionStorage agar aman saat refresh
+    sessionStorage.setItem('lp_current_page', page);
+    if (param !== null) {
+      sessionStorage.setItem('lp_current_param', JSON.stringify(param));
+    } else {
+      sessionStorage.removeItem('lp_current_param');
+    }
     
     switch(page) {
       case 'home':
@@ -32,7 +56,8 @@ class App {
         break;
       
       case 'askName':
-        this.showNamePrompt();
+        app.innerHTML = this.namePromptPage.render(); // <-- Render form nama
+        this.namePromptPage.addStyles();
         this.currentPage = 'askName';
         break;
       
@@ -70,16 +95,18 @@ class App {
     }
   }
 
-  showNamePrompt() {
-    const name = prompt('Siapa nama kamu? 👤', 'Anak Pintar');
+  // Fungsi penanganan saat form nama disubmit
+  handleNameSubmit(event) {
+    event.preventDefault();
+    const inputElement = document.getElementById('nickname-input');
+    const name = inputElement ? inputElement.value.trim() : '';
     
-    if(name && name.trim()) {
-      storage.setNickname(name.trim());
-      this.navigate('levels');
+    if (name) {
+      storage.setNickname(name);
     } else {
       storage.setNickname('Anak Pintar');
-      this.navigate('levels');
     }
+    this.navigate('levels');
   }
 
   checkAnswer() {
@@ -104,4 +131,8 @@ class App {
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   window.APP = new App();
+
+  // Inisialisasi asisten robot interaktif
+  const robot = new RobotCompanion();
+  robot.init();
 });

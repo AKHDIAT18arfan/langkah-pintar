@@ -1,91 +1,16 @@
+/* src/styles/variables.css - Disinkronkan dengan theme.css */
 :root {
-  /* Primary Colors - Action AI Boost Theme */
-  --primary: #FF6B35;
-  --primary-dark: #E55100;
-  --primary-light: #FFB84D;
-  --accent: #FF8C42;
-  
-  /* Dark Theme */
-  --dark-bg: #0f0f0f;
-  --dark-card: #1a1a1a;
-  --dark-card-light: #2d2d2d;
-  --dark-border: #3d3d3d;
-  
-  /* Status Colors */
-  --success: #26A69A;
-  --warning: #FFA726;
-  --error: #FF6B6B;
-  
-  /* Text */
-  --text-light: #ffffff;
-  --text-secondary: #e0e0e0;
-  --text-muted: #999999;
-  
-  /* Typography - Pixel Art Style */
-  --font-main: 'Baloo 2', 'Fredoka', 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-bold: 700;
-  --font-semi: 600;
-  --font-normal: 400;
-  
-  --font-size-h1: 3.5rem;
-  --font-size-h2: 2.5rem;
-  --font-size-h3: 1.8rem;
-  --font-size-body: 1.1rem;
-  
-  /* Spacing */
-  --spacing-xs: 0.5rem;
-  --spacing-sm: 1rem;
-  --spacing-md: 1.5rem;
-  --spacing-lg: 2rem;
-  --spacing-xl: 3rem;
-  --spacing-2xl: 4rem;
-  
-  /* Border & Radius */
-  --border-radius: 4px;
-  --border-radius-lg: 8px;
-  --border-width: 3px;
-  --border-width-sm: 2px;
-  
-  /* Shadows */
-  --shadow-sm: 0 2px 8px rgba(255, 107, 53, 0.1);
-  --shadow-md: 0 4px 16px rgba(255, 107, 53, 0.2);
-  --shadow-lg: 0 8px 32px rgba(255, 107, 53, 0.3);
-  --shadow-xl: 0 12px 48px rgba(255, 107, 53, 0.4);
-  
-  /* Transitions */
-  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Z-index */
-  --z-dropdown: 100;
-  --z-modal: 1000;
-  --z-tooltip: 1100;
-}
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2d2d2d 100%);
-  color: var(--text-light);
-  font-family: var(--font-main);
-  overflow-x: hidden;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#app {
-  min-height: 100vh;
-  width: 100%;
-  position: relative;
+  --bg-color: var(--n-bg, #f8f9fa);
+  --card-bg: var(--n-surface, #ffffff);
+  --text-primary: var(--n-ink, #111111);
+  --text-muted: var(--n-muted, #555555);
+  --accent-orange: var(--n-accent, #ff5722);
+  --accent-orange-hover: #e64a19;
+  --accent-blue: #29b6f6;
+  --accent-green: var(--n-ok, #66bb6a);
+  --border-color: var(--n-ink, #111111);
+  --shadow-retro: 5px 5px 0px var(--n-ink, #111111);
+  --shadow-sm: 3px 3px 0px var(--n-ink, #111111);
+  --font-pixel: 'Pixelify Sans', 'Press Start 2P', monospace;
+  --font-mono: 'Space Mono', 'JetBrains Mono', monospace;
 }

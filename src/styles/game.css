@@ -1,657 +1,102 @@
-/* ========================================
-   GAME PAGE - ACTION AI BOOST STYLE
-   ======================================== */
-
-.game-page,
-.game-container {
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2d2d2d 100%);
-  min-height: 100vh;
-  padding: var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+/* Card Kotak Tegas */
+.card, .level-card, .game-card, .material-box {
+  background-color: var(--card-bg) !important;
+  border: 3px solid var(--border-color) !important;
+  box-shadow: var(--shadow-retro) !important;
+  padding: 2rem !important;
+  margin-bottom: 2rem !important;
   position: relative;
 }
 
-/* Grid Pattern Background */
-.game-page::before,
-.game-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: 
-    linear-gradient(90deg, transparent 24%, rgba(255, 107, 53, 0.03) 25%, rgba(255, 107, 53, 0.03) 26%, transparent 27%, transparent 74%, rgba(255, 107, 53, 0.03) 75%, rgba(255, 107, 53, 0.03) 76%, transparent 77%, transparent),
-    linear-gradient(0deg, transparent 24%, rgba(255, 107, 53, 0.03) 25%, rgba(255, 107, 53, 0.03) 26%, transparent 27%, transparent 74%, rgba(255, 107, 53, 0.03) 75%, rgba(255, 107, 53, 0.03) 76%, transparent 77%, transparent);
-  background-size: 50px 50px;
+.level-card:hover {
+  border-color: var(--accent-orange) !important;
+}
+
+/* Items Drag and Drop (Sortable) */
+.sortable-item, .step-item {
+  background-color: var(--card-bg) !important;
+  border: 2px solid var(--border-color) !important;
+  padding: 1rem 1.25rem !important;
+  margin-bottom: 0.75rem !important;
+  box-shadow: var(--shadow-sm) !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  cursor: grab;
+}
+
+.sortable-item:hover, .step-item:hover {
+  background-color: #fff4f0 !important;
+  border-color: var(--accent-orange) !important;
+}
+
+/* Terminal Output Robot */
+.terminal-box, .robot-view {
+  background-color: #121212 !important;
+  color: #00ff66 !important;
+  font-family: var(--font-mono) !important;
+  border: 3px solid var(--border-color) !important;
+  box-shadow: var(--shadow-retro) !important;
+  padding: 1.5rem !important;
+  margin-top: 1.5rem !important;
+}
+
+.terminal-header {
+  color: #ffffff !important;
+  border-bottom: 1px dashed #333333 !important;
+  padding-bottom: 0.5rem !important;
+  margin-bottom: 1rem !important;
+  font-family: var(--font-pixel) !important;
+  font-size: 0.7rem !important;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Pixel Robot Mascot (Ornamen Pojok Kamera/Cursor Follow) */
+.pixel-robot-wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
   pointer-events: none;
-  z-index: 1;
 }
 
-/* ========================================
-   GAME HEADER
-   ======================================== */
-
-.game-header {
-  max-width: 900px;
-  width: 100%;
-  text-align: center;
-  margin-bottom: var(--spacing-xl);
-  animation: fadeInDown 0.6s ease-out;
+.pixel-robot-head {
+  width: 56px;
+  height: 50px;
+  background-color: #ffffff;
+  border: 3px solid #111111;
+  box-shadow: 3px 3px 0px #111111;
   position: relative;
-  z-index: 2;
-}
-
-.game-level-badge {
-  display: inline-block;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  color: var(--text-light);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: 50px;
-  font-weight: var(--font-bold);
-  font-size: 0.85rem;
-  margin-bottom: var(--spacing-md);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  box-shadow: var(--shadow-md);
-  border: var(--border-width-sm) solid var(--primary);
-}
-
-.game-header h1 {
-  margin-bottom: var(--spacing-md);
-  font-size: 3rem;
-}
-
-.game-description {
-  font-size: 1.2rem;
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-lg);
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.8;
-}
-
-/* ========================================
-   LEVEL INSTRUCTION BOX
-   ======================================== */
-
-.level-instruction {
-  background: linear-gradient(135deg, var(--dark-card) 0%, var(--dark-card-light) 100%);
-  border: var(--border-width) dashed var(--primary);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-md) var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
-  max-width: 800px;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-  box-shadow: var(--shadow-md);
-  animation: slideInLeft 0.6s ease-out;
-  position: relative;
-  z-index: 2;
-}
-
-.level-instruction-emoji {
-  font-size: 2.5rem;
-  min-width: 60px;
   display: flex;
   justify-content: center;
-  animation: bounce 2s infinite;
-}
-
-.level-instruction-text {
-  flex: 1;
-  font-size: 1.1rem;
-  color: var(--text-light);
-  font-weight: var(--font-semi);
-}
-
-/* ========================================
-   STEPS CONTAINER
-   ======================================== */
-
-.steps-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
-  padding: var(--spacing-lg);
-  background: rgba(0, 0, 0, 0.3);
-  border: var(--border-width) solid var(--primary);
-  border-radius: var(--border-radius);
-  min-height: 280px;
-  width: 100%;
-  max-width: 900px;
-  animation: fadeInUp 0.6s ease-out;
-  position: relative;
-  z-index: 2;
-  box-shadow: inset 0 0 20px rgba(255, 107, 53, 0.1);
-}
-
-/* ========================================
-   STEP CARD
-   ======================================== */
-
-.step-card {
-  background: linear-gradient(135deg, var(--dark-card) 0%, var(--dark-card-light) 100%);
-  border: var(--border-width) solid var(--primary);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-md);
-  cursor: grab;
-  user-select: none;
-  transition: all var(--transition-normal);
-  box-shadow: var(--shadow-md);
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-height: 140px;
-  position: relative;
-  overflow: hidden;
 }
 
-.step-card::before {
-  content: '';
+.pixel-robot-screen {
+  width: 38px;
+  height: 24px;
+  background-color: #111111;
+  border: 2px solid #111111;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.pixel-eye {
+  width: 8px;
+  height: 8px;
+  background-color: #ffffff;
+  position: relative;
+}
+
+.pixel-pupil {
+  width: 3px;
+  height: 3px;
+  background-color: var(--accent-orange);
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: var(--border-width);
-  background: linear-gradient(90deg, var(--primary), var(--accent), transparent);
-}
-
-.step-card:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--accent);
-  background: linear-gradient(135deg, var(--dark-card-light) 0%, #3d3d3d 100%);
-}
-
-.step-card:active {
-  cursor: grabbing;
-  opacity: 0.8;
-  transform: scale(0.98);
-}
-
-.step-card.dragging {
-  opacity: 0.6;
-  transform: scale(0.95);
-}
-
-.step-card.drag-over {
-  background: rgba(255, 107, 53, 0.15);
-  border-color: var(--accent);
-  border-style: dashed;
-  box-shadow: inset 0 0 15px rgba(255, 107, 53, 0.3);
-}
-
-.step-emoji {
-  font-size: 2.8rem;
-  margin-bottom: var(--spacing-sm);
-  display: block;
-  transition: transform var(--transition-normal);
-}
-
-.step-card:hover .step-emoji {
-  transform: rotate(12deg) scale(1.15);
-}
-
-.step-text {
-  font-size: 0.95rem;
-  font-weight: var(--font-semi);
-  color: var(--text-light);
-  line-height: 1.5;
-  word-break: break-word;
-}
-
-/* ========================================
-   DROP ZONE / ANSWER AREA
-   ======================================== */
-
-.drop-zone {
-  background: linear-gradient(135deg, var(--dark-card) 0%, #2a2a2a 100%);
-  border: var(--border-width) dashed var(--primary);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
-  min-height: 180px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  transition: all var(--transition-normal);
-  position: relative;
-  max-width: 900px;
-  box-shadow: var(--shadow-md);
-}
-
-.drop-zone.over {
-  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(255, 107, 53, 0.05) 100%);
-  border-color: var(--accent);
-  border-style: solid;
-  box-shadow: inset 0 0 25px rgba(255, 107, 53, 0.2);
-}
-
-.drop-zone-label {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  opacity: 0.8;
-  font-weight: var(--font-semi);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-bottom: var(--spacing-md);
-}
-
-.drop-zone-item {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  border: var(--border-width-sm) solid var(--primary);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-md) var(--spacing-lg);
-  color: var(--text-light);
-  font-weight: var(--font-semi);
-  font-size: 1.05rem;
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-  animation: slideInLeft 0.3s ease-out;
-  cursor: grab;
-  box-shadow: var(--shadow-md);
-  transition: all var(--transition-normal);
-}
-
-.drop-zone-item:hover {
-  transform: translateX(5px);
-  box-shadow: var(--shadow-lg);
-}
-
-.drop-zone-item:active {
-  cursor: grabbing;
-}
-
-.drop-zone-item-number {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 40px;
-  height: 40px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: var(--border-radius);
-  font-weight: var(--font-bold);
-  font-size: 1.2rem;
-  flex-shrink: 0;
-}
-
-.drop-zone-item-text {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.drop-zone-empty {
-  text-align: center;
-  color: var(--text-secondary);
-  opacity: 0.6;
-  font-style: italic;
-  padding: var(--spacing-lg);
-}
-
-/* ========================================
-   GAME ACTIONS
-   ======================================== */
-
-.game-actions {
-  display: flex;
-  gap: var(--spacing-md);
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-  max-width: 900px;
-  margin-bottom: var(--spacing-lg);
-  position: relative;
-  z-index: 2;
-}
-
-.btn-primary,
-.btn-secondary,
-.btn-check,
-.btn-robot,
-.btn-next,
-.btn-back {
-  padding: 1.2rem 2.4rem;
-  font-size: 1rem;
-  font-weight: var(--font-bold);
-  border: var(--border-width) solid var(--primary);
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  color: var(--text-light);
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: all var(--transition-normal);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  box-shadow: var(--shadow-md);
-  flex: 1;
-  min-width: 150px;
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-primary:hover,
-.btn-check:hover,
-.btn-next:hover {
-  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-.btn-secondary,
-.btn-back {
-  background: var(--dark-card);
-  border-color: var(--text-light);
-  color: var(--text-light);
-}
-
-.btn-secondary:hover,
-.btn-back:hover {
-  background: var(--text-light);
-  color: var(--primary);
-  border-color: var(--text-light);
-}
-
-.btn-robot {
-  background: var(--dark-card);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.btn-robot:hover {
-  background: var(--accent);
-  color: var(--text-light);
-  border-color: var(--accent);
-}
-
-/* ========================================
-   FEEDBACK SECTION
-   ======================================== */
-
-.feedback-section {
-  background: linear-gradient(135deg, var(--dark-card) 0%, var(--dark-card-light) 100%);
-  border: var(--border-width) solid var(--success);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-lg);
-  margin-top: var(--spacing-lg);
-  text-align: center;
-  animation: slideInUp 0.5s ease-out;
-  box-shadow: var(--shadow-lg);
-  position: relative;
-  z-index: 2;
-  max-width: 900px;
-}
-
-.feedback-section.error {
-  border-color: var(--warning);
-}
-
-.feedback-title {
-  font-size: 2.2rem;
-  font-weight: var(--font-bold);
-  margin-bottom: var(--spacing-md);
-  color: var(--success);
-}
-
-.feedback-section.error .feedback-title {
-  color: var(--warning);
-}
-
-.feedback-message {
-  font-size: 1.2rem;
-  color: var(--text-light);
-  margin-bottom: var(--spacing-lg);
-  line-height: 1.8;
-}
-
-.feedback-explanation,
-.feedback-hint {
-  background: rgba(255, 107, 53, 0.1);
-  border-left: var(--border-width) solid var(--primary);
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius);
-  text-align: left;
-  margin-bottom: var(--spacing-lg);
-  font-size: 1rem;
-  color: var(--text-light);
-  line-height: 1.8;
-}
-
-.feedback-explanation p,
-.feedback-hint p {
-  margin-bottom: 0.5rem;
-}
-
-.feedback-explanation p:last-child,
-.feedback-hint p:last-child {
-  margin-bottom: 0;
-}
-
-/* ========================================
-   ROBOT VIEW (PSEUDOCODE)
-   ======================================== */
-
-.robot-view {
-  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
-  border: var(--border-width-sm) solid var(--accent);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
-  font-family: 'Courier New', monospace;
-  font-size: 1rem;
-  color: var(--accent);
-  overflow-x: auto;
-  animation: fadeInUp 0.5s ease-out;
-  box-shadow: var(--shadow-md);
-  max-width: 900px;
-}
-
-.robot-view-label {
-  font-size: 0.9rem;
-  color: var(--text-light);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: var(--spacing-md);
-  opacity: 0.8;
-  font-weight: var(--font-semi);
-}
-
-.robot-step {
-  padding: var(--spacing-md) 0;
-  border-bottom: 1px dashed rgba(255, 107, 53, 0.3);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-  transition: all var(--transition-normal);
-}
-
-.robot-step:hover {
-  background: rgba(255, 107, 53, 0.05);
-  padding-left: var(--spacing-md);
-  padding-right: var(--spacing-md);
-  border-radius: var(--border-radius);
-}
-
-.robot-step:last-child {
-  border-bottom: none;
-}
-
-.robot-step-number {
-  font-weight: var(--font-bold);
-  color: var(--primary);
-  min-width: 35px;
-  text-align: right;
-  font-size: 1.1rem;
-}
-
-.robot-step-text {
-  flex: 1;
-  color: var(--accent);
-  font-size: 1rem;
-}
-
-/* ========================================
-   STARS & COMPLETION
-   ======================================== */
-
-.stars-container {
-  display: flex;
-  justify-content: center;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
-  font-size: 3.5rem;
-  animation: fadeInDown 0.6s ease-out;
-}
-
-.star {
-  opacity: 0.3;
-  animation: pulse 1s ease-in-out infinite;
-}
-
-.star.earned {
-  opacity: 1;
-  animation: bounce 0.6s ease-out;
-}
-
-.star.earned:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.star.earned:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.star.earned:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-/* ========================================
-   RESPONSIVE
-   ======================================== */
-
-@media (max-width: 768px) {
-  .game-page,
-  .game-container {
-    padding: var(--spacing-md);
-  }
-
-  .game-header h1 {
-    font-size: 2rem;
-  }
-
-  .game-description {
-    font-size: 1rem;
-  }
-
-  .step-card {
-    min-height: 120px;
-  }
-
-  .step-emoji {
-    font-size: 2rem;
-  }
-
-  .step-text {
-    font-size: 0.85rem;
-  }
-
-  .steps-container {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-sm);
-    padding: var(--spacing-md);
-    min-height: auto;
-  }
-
-  .game-actions {
-    flex-direction: column;
-  }
-
-  .btn-primary,
-  .btn-check,
-  .btn-next,
-  .btn-robot,
-  .btn-back {
-    width: 100%;
-    min-width: auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .game-page,
-  .game-container {
-    padding: var(--spacing-sm);
-  }
-
-  .game-header h1 {
-    font-size: 1.6rem;
-    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
-  }
-
-  .game-description {
-    font-size: 0.95rem;
-  }
-
-  .level-instruction {
-    flex-direction: column;
-    padding: var(--spacing-md);
-    gap: var(--spacing-sm);
-  }
-
-  .level-instruction-emoji {
-    font-size: 2rem;
-    min-width: auto;
-  }
-
-  .steps-container {
-    grid-template-columns: 1fr;
-    min-height: auto;
-    padding: var(--spacing-sm);
-  }
-
-  .step-card {
-    min-height: 100px;
-  }
-
-  .step-emoji {
-    font-size: 1.8rem;
-  }
-
-  .step-text {
-    font-size: 0.8rem;
-  }
-
-  .feedback-title {
-    font-size: 1.6rem;
-  }
-
-  .feedback-message {
-    font-size: 1rem;
-  }
-
-  .robot-view {
-    font-size: 0.85rem;
-    padding: var(--spacing-md);
-  }
-
-  .btn-primary,
-  .btn-check,
-  .btn-next {
-    padding: 0.9rem 1.5rem;
-    font-size: 0.85rem;
-  }
-
-  .stars-container {
-    font-size: 2.5rem;
-  }
+  top: 2px;
+  left: 2px;
 }

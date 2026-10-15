@@ -1,403 +1,92 @@
-/* ========================================
-   GLOBAL STYLES - ACTION AI BOOST THEME
-   ======================================== */
-
-/* Typography */
-h1 {
-  font-size: var(--font-size-h1);
-  font-weight: var(--font-bold);
-  color: var(--primary);
-  text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.7);
-  letter-spacing: 2px;
-  margin-bottom: var(--spacing-lg);
-  line-height: 1.2;
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-h2 {
-  font-size: var(--font-size-h2);
-  font-weight: var(--font-bold);
-  color: var(--primary);
-  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
-  letter-spacing: 1px;
-  margin-bottom: var(--spacing-md);
+html, body, #app {
+  background-color: var(--bg-color) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-mono) !important;
+  min-height: 100vh;
 }
 
-h3 {
-  font-size: var(--font-size-h3);
-  font-weight: var(--font-semi);
-  color: var(--accent);
-  margin-bottom: var(--spacing-md);
+body {
+  background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px) !important;
+  background-size: 20px 20px !important;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
-p {
-  font-size: var(--font-size-body);
-  color: var(--text-light);
-  line-height: 1.8;
-  margin-bottom: var(--spacing-md);
+/* Navbar Action AI Boost Style */
+header, .navbar {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 1rem 2.5rem !important;
+  border-bottom: 3px solid var(--border-color) !important;
+  background-color: var(--card-bg) !important;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-/* Buttons */
-button {
-  font-family: var(--font-main);
-  font-size: 1rem;
-  font-weight: var(--font-bold);
-  padding: 1.2rem 2.4rem;
-  border: var(--border-width) solid var(--primary);
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  color: var(--text-light);
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-pixel);
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.brand-badge {
+  background-color: var(--accent-orange);
+  color: #ffffff;
+  padding: 0.4rem 0.6rem;
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
+  border: 2px solid var(--border-color);
+  box-shadow: 2px 2px 0px var(--border-color);
+}
+
+/* Tombol Utama Neo-Brutalist */
+button, .btn, .btn-primary {
+  background-color: var(--accent-orange) !important;
+  color: #ffffff !important;
+  font-family: var(--font-mono) !important;
+  font-weight: 800 !important;
+  font-size: 0.95rem !important;
+  padding: 0.75rem 1.5rem !important;
+  border: 3px solid var(--border-color) !important;
+  box-shadow: var(--shadow-retro) !important;
   cursor: pointer;
-  border-radius: var(--border-radius);
-  transition: all var(--transition-normal);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  box-shadow: var(--shadow-md);
-  position: relative;
-  overflow: hidden;
+  transition: transform 0.05s ease, box-shadow 0.05s ease, background-color 0.15s ease;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  text-decoration: none !important;
 }
 
-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left var(--transition-normal);
-  z-index: 0;
+button:hover, .btn:hover, .btn-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0px var(--border-color) !important;
+  background-color: var(--accent-orange-hover) !important;
 }
 
-button:hover::before {
-  left: 100%;
+button:active, .btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--border-color) !important;
 }
 
-button:hover {
-  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
 }
 
-button:active {
-  transform: translateY(-2px);
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-button.secondary {
-  background: var(--dark-card);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-button.secondary:hover {
-  background: var(--accent);
-  color: var(--text-light);
-  border-color: var(--accent);
-}
-
-button.success {
-  background: linear-gradient(135deg, var(--success) 0%, #1db8a4 100%);
-  border-color: var(--success);
-}
-
-button.success:hover {
-  box-shadow: 0 0 30px rgba(38, 166, 154, 0.5);
-}
-
-button.warning {
-  background: linear-gradient(135deg, var(--warning) 0%, #FF9800 100%);
-  border-color: var(--warning);
-}
-
-/* Card Component */
-.card {
-  background: linear-gradient(135deg, var(--dark-card) 0%, var(--dark-card-light) 100%);
-  border: var(--border-width) solid var(--primary);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-md);
-  transition: all var(--transition-normal);
-  position: relative;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: var(--border-width);
-  background: linear-gradient(90deg, var(--primary), var(--accent), transparent);
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
-}
-
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--accent);
-}
-
-/* Grid & Layout */
-.grid {
-  display: grid;
-}
-
-.grid-2 {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--spacing-lg);
-}
-
-.grid-3 {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--spacing-lg);
-}
-
-.flex {
-  display: flex;
-}
-
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.flex-between {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.gap-1 { gap: var(--spacing-sm); }
-.gap-2 { gap: var(--spacing-md); }
-.gap-3 { gap: var(--spacing-lg); }
-
-/* Spacing Utilities */
-.mt-1 { margin-top: var(--spacing-sm); }
-.mt-2 { margin-top: var(--spacing-md); }
-.mt-3 { margin-top: var(--spacing-lg); }
-.mb-1 { margin-bottom: var(--spacing-sm); }
-.mb-2 { margin-bottom: var(--spacing-md); }
-.mb-3 { margin-bottom: var(--spacing-lg); }
-.p-1 { padding: var(--spacing-sm); }
-.p-2 { padding: var(--spacing-md); }
-.p-3 { padding: var(--spacing-lg); }
-
-.text-center {
-  text-align: center;
-}
-
-.text-primary {
-  color: var(--primary);
-}
-
-.text-secondary {
-  color: var(--text-secondary);
-}
-
-/* ========================================
-   ANIMATIONS
-   ======================================== */
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes glow {
-  0%, 100% {
-    box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(255, 107, 53, 0.8);
-  }
-}
-
-.animate-fade-down {
-  animation: fadeInDown 0.6s ease-out;
-}
-
-.animate-fade-up {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.animate-slide-left {
-  animation: slideInLeft 0.6s ease-out;
-}
-
-.animate-slide-right {
-  animation: slideInRight 0.6s ease-out;
-}
-
-.animate-bounce {
-  animation: bounce 2s infinite;
-}
-
-.animate-pulse {
-  animation: pulse 2s infinite;
-}
-
-.animate-glow {
-  animation: glow 2s infinite;
-}
-
-/* ========================================
-   RESPONSIVE DESIGN
-   ======================================== */
-
-@media (max-width: 1024px) {
-  h1 {
-    font-size: 2.8rem;
-  }
-
-  h2 {
-    font-size: 2rem;
-  }
-
-  h3 {
-    font-size: 1.5rem;
-  }
-
-  p {
-    font-size: 1rem;
-  }
-
-  button {
-    padding: 1rem 2rem;
-    font-size: 0.95rem;
-  }
-
-  .grid-2,
-  .grid-3 {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  h1 {
-    font-size: 2.2rem;
-    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
-  }
-
-  h2 {
-    font-size: 1.6rem;
-    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
-  }
-
-  p {
-    font-size: 0.95rem;
-  }
-
-  button {
-    padding: 0.9rem 1.8rem;
-    letter-spacing: 1px;
-  }
-
-  .card {
-    padding: var(--spacing-md);
-  }
-}
-
-@media (max-width: 480px) {
-  h1 {
-    font-size: 1.8rem;
-  }
-
-  h2 {
-    font-size: 1.4rem;
-  }
-
-  h3 {
-    font-size: 1.1rem;
-  }
-
-  p {
-    font-size: 0.9rem;
-  }
-
-  button {
-    padding: 0.8rem 1.5rem;
-    font-size: 0.85rem;
-    width: 100%;
-  }
-
-  .card {
-    padding: var(--spacing-sm);
-  }
-
-  .grid-2,
-  .grid-3 {
-    gap: var(--spacing-md);
-  }
+h1, h2, h3, h4 {
+  color: var(--text-primary) !important;
+  font-weight: 800;
 }

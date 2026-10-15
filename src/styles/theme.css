@@ -1,0 +1,173 @@
+/* src/styles/theme.css - dimuat TERAKHIR, menimpa style bawaan tiap komponen */
+:root {
+  --n-bg: #fafaf9;
+  --n-surface: #ffffff;
+  --n-ink: #0f172a;
+  --n-muted: #64748b;
+  --n-accent: #ff5722;
+  --n-btn: #f1f3f5;
+  --n-dot: #d6d9de;
+  --n-ok: #16a34a;
+  --n-bad: #dc2626;
+  --n-head: 'Pixelify Sans', 'Courier New', monospace;
+  --n-body: 'Space Mono', 'Courier New', monospace;
+  --n-border: 2px solid var(--n-ink);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --n-bg: #0b1020; --n-surface: #141b2e; --n-ink: #e8ecf5; --n-muted: #94a3b8;
+    --n-btn: #1e2740; --n-dot: #232c45; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --n-bg: #0b1020; --n-surface: #141b2e; --n-ink: #e8ecf5; --n-muted: #94a3b8;
+  --n-btn: #1e2740; --n-dot: #232c45; color-scheme: dark;
+}
+
+html body {
+  margin: 0;
+  background: var(--n-bg);
+  background-image: radial-gradient(var(--n-dot) 1px, transparent 1px);
+  background-size: 18px 18px;
+  color: var(--n-ink);
+  font-family: var(--n-body);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ---------- Tipografi ---------- */
+#app :is(h1, h2, h3) {
+  font-family: var(--n-head); color: var(--n-ink); text-transform: uppercase;
+  text-shadow: none; letter-spacing: 0; line-height: 1.1;
+}
+#app h1 { font-size: clamp(30px, 7vw, 52px); }
+#app h2 { font-size: clamp(22px, 5vw, 32px); }
+#app p, #app li { color: inherit; }
+#app :is(.home-subtitle, .level-header p, .level-desc, .game-description, .materi-subtitle,
+         .feature-card p, .char-card p, .tip-card p, .benefit-item p) { color: var(--n-muted); }
+#app .logo-text { font-family: var(--n-head); color: var(--n-accent); text-shadow: none; letter-spacing: .06em; }
+#app :is(.progress-label, .progress-text) { color: var(--n-accent); }
+
+/* ---------- Halaman ---------- */
+#app :is(.home-page, .level-select-page, .game-container, .feedback-page, .materi-page) {
+  background: none; color: var(--n-ink); min-height: 100vh;
+}
+#app :is(.home-grid-bg, .level-grid-bg), #app .feedback-page::before { display: none; }
+
+#app .home-page { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px 16px; }
+#app .home-content { max-width: 1000px; width: 100%; text-align: center; }
+#app .home-header { margin-bottom: 32px; }
+#app .home-logo { display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 16px; }
+#app .home-subtitle { max-width: 600px; margin: 0 auto; }
+#app .home-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 32px; }
+#app .home-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+#app .levels-preview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
+#app .home-levels-preview { padding: 20px; }
+#app .home-levels-preview h2 { margin-bottom: 16px; }
+
+#app .level-select-page { padding: 24px 16px; }
+#app .level-select-content { max-width: 1100px; margin: 0 auto; }
+#app .level-header { text-align: center; margin-bottom: 32px; }
+#app .progress-info { max-width: 480px; margin: 16px auto 0; display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+#app .progress-bar { flex: 1; height: 14px; background: var(--n-btn); border: var(--n-border); border-radius: 0; overflow: hidden; }
+#app .progress-fill { height: 100%; background: var(--n-accent); box-shadow: none; }
+#app .levels-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 20px; margin-bottom: 32px; }
+#app .level-card { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; min-height: 200px; cursor: pointer; }
+#app .level-card.locked { opacity: .55; cursor: not-allowed; box-shadow: none; border-style: dashed; }
+#app .level-card h3 { font-size: 18px; margin: 8px 0; }
+#app .level-number, #app .benefit-number {
+  display: grid; place-items: center; background: var(--n-accent); color: #fff;
+  border: var(--n-border); border-radius: 0; box-shadow: none; font: 700 15px var(--n-body);
+}
+#app .level-number { position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; }
+#app .lock-badge { position: absolute; bottom: 8px; right: 8px; font-size: 22px; }
+#app .level-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* ---------- Kartu / kotak ---------- */
+#app :is(.feature-card, .home-levels-preview, .level-card, .progress-info, .feedback-correct, .feedback-wrong,
+         .feedback-message, .robot-view, .section-card, .char-card, .benefit-item, .tip-card, .connection-box,
+         .highlight-section, .steps-container) {
+  background: var(--n-surface); color: var(--n-ink); border: var(--n-border);
+  border-radius: 0; box-shadow: 4px 4px 0 var(--n-ink);
+}
+#app :is(.feature-card, .level-card)::before { display: none; }
+#app :is(.feature-card, .char-card, .tip-card, .level-card:not(.locked)):hover {
+  transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--n-ink); border-color: var(--n-ink);
+}
+#app .tip-card { border-style: dashed; }
+#app .feedback-correct { box-shadow: 4px 4px 0 var(--n-ok); border-color: var(--n-ok); }
+#app .feedback-wrong { box-shadow: 4px 4px 0 var(--n-bad); border-color: var(--n-bad); }
+#app .preview-item { background: var(--n-btn); border: 2px dashed var(--n-ink); border-radius: 0; color: var(--n-ink); padding: 12px; }
+#app :is(.feedback-explanation, .feedback-hint, .highlight-text) {
+  background: var(--n-btn); color: var(--n-ink); border: var(--n-border);
+  border-left: 6px solid var(--n-accent); border-radius: 0;
+}
+#app .section-title { border-bottom: var(--n-border); padding-bottom: 8px; }
+#app .keyword-card { background: var(--n-accent); border: var(--n-border); border-radius: 0; box-shadow: 4px 4px 0 var(--n-ink); }
+#app :is(.keyword-name, .keyword-desc) { color: #fff; }
+#app .materi-cta { background: var(--n-accent); border: var(--n-border); border-radius: 0; box-shadow: 4px 4px 0 var(--n-ink); }
+#app .materi-cta :is(h2, p) { color: #fff; }
+#app .pseudocode-box { background: #0f172a; border: var(--n-border); border-radius: 0; box-shadow: 4px 4px 0 var(--n-ink); font-family: var(--n-body); }
+#app .pseudocode-box :is(pre, code) { color: #ffb199; font-family: var(--n-body); }
+#app .materi-container { max-width: 900px; margin: 0 auto; }
+#app .materi-page { padding: 24px 16px; }
+
+/* ---------- Tombol ---------- */
+#app button[class^="btn-"] {
+  font: 700 13px var(--n-body); text-transform: uppercase; letter-spacing: .04em;
+  background: var(--n-btn); color: var(--n-ink); border: var(--n-border); border-radius: 0;
+  box-shadow: 3px 3px 0 var(--n-ink); padding: 12px 20px; min-width: 0; cursor: pointer;
+  transition: transform .08s, box-shadow .08s;
+}
+#app button:is(.btn-start, .btn-next, .btn-retry, .btn-primary, .btn-materi) { background: var(--n-accent); color: #fff; }
+#app button.btn-success { background: var(--n-ok); color: #fff; }
+#app button.btn-start, #app button.btn-learn { padding: 16px 32px; font-size: 15px; }
+#app button[class^="btn-"]:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--n-ink); }
+#app button[class^="btn-"]:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--n-ink); }
+
+/* ---------- Halaman game ---------- */
+#app .game-container { max-width: 720px; margin: 0 auto; padding: 24px 16px 48px; }
+#app .game-header { margin-bottom: 20px; }
+#app .game-header h1 { font-size: clamp(26px, 6vw, 40px); }
+#app .steps-container { display: flex; flex-direction: column; gap: 12px; padding: 16px; min-height: 0; counter-reset: langkah; }
+#app .step-card {
+  counter-increment: langkah; display: flex; flex-direction: row; align-items: center; gap: 12px;
+  text-align: left; min-height: 0; padding: 12px; cursor: grab; user-select: none;
+  background: var(--n-surface); color: var(--n-ink); border: var(--n-border); border-radius: 0;
+  box-shadow: 3px 3px 0 var(--n-ink); touch-action: manipulation;
+}
+#app .step-card::before {
+  content: counter(langkah); flex: none; width: 30px; height: 30px; display: grid; place-items: center;
+  background: var(--n-ink); color: var(--n-bg); font: 700 14px var(--n-body);
+}
+#app .step-card::after { content: '\283F'; margin-left: auto; color: var(--n-muted); font-size: 22px; }
+#app .step-text { font-size: 14px; font-weight: 700; line-height: 1.4; }
+#app .step-card.ok { border-color: var(--n-ok); box-shadow: 3px 3px 0 var(--n-ok); }
+#app .step-card.bad { border-color: var(--n-bad); box-shadow: 3px 3px 0 var(--n-bad); }
+#app .step-card.sortable-ghost { opacity: .4; }
+#app .step-card.sortable-chosen { box-shadow: 6px 6px 0 var(--n-accent); }
+#app .game-actions { display: flex; gap: 12px; flex-wrap: wrap; margin: 20px 0; }
+#app .feedback-message { padding: 20px; text-align: center; margin-top: 16px; }
+#app .feedback-message.feedback-correct { border-color: var(--n-ok); box-shadow: 4px 4px 0 var(--n-ok); }
+#app .feedback-message.feedback-wrong { border-color: var(--n-bad); box-shadow: 4px 4px 0 var(--n-bad); }
+#app .feedback-buttons, #app .feedback-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 16px; }
+#app .robot-view { padding: 20px; margin-top: 16px; text-align: left; }
+#app .robot-code { background: #0f172a; border: var(--n-border); padding: 12px 12px 12px 36px; margin: 12px 0; }
+#app .robot-code li { color: #ffb199; padding: 2px 0; }
+
+@media (max-width: 600px) {
+  #app .levels-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  #app .level-desc { display: none; }
+  #app .home-cta { flex-direction: column; }
+  #app .home-cta button { width: 100%; }
+  #app .level-actions button { width: 100%; }
+}
+
+/* ---------- Tombol ganti tema ---------- */
+#theme-toggle {
+  position: fixed; top: 12px; right: 12px; z-index: 50; width: 40px; height: 40px;
+  font: 700 18px var(--n-body); background: var(--n-surface); color: var(--n-ink);
+  border: var(--n-border); box-shadow: 3px 3px 0 var(--n-ink); cursor: pointer;
+}
+#theme-toggle:active { transform: translate(3px, 3px); box-shadow: none; }
